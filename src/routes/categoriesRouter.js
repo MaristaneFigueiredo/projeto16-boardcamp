@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { postCategory } from "../controllers/categoriesController.js";
+import {
+  postCategory,
+  getCategories,
+} from "../controllers/categoriesController.js";
 import {
   categoryValidation,
   categoryExists,
@@ -16,4 +19,5 @@ categoriesRouter.post(
 );
 
 //GET categories
+categoriesRouter.get("/categories", getCategories);
 export default categoriesRouter;

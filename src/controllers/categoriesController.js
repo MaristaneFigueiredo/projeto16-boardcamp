@@ -18,3 +18,15 @@ export async function postCategory(req, res) {
     return res.status(500).send({ message: "Erro inesperado no servidor!" });
   }
 }
+
+export async function getCategories(req, res) {
+  try {
+    const category = await connection.query(`
+        SELECT * FROM categories
+    `);
+
+    res.send(category.rows);
+  } catch (error) {
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
+}
