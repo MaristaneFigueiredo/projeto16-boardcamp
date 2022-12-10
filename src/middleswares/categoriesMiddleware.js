@@ -22,7 +22,9 @@ export async function categoryExists(req, res, next) {
     );
 
     if (category.rows.length > 0) {
-      return res.status(409).send({ message: "Esta categoria já existe!" });
+      return res
+        .status(409)
+        .send({ message: "Esta categoria já foi cadastrada!" });
     }
   } catch (error) {
     console.log(error);
