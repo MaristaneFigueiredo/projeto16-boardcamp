@@ -1,9 +1,9 @@
 import connection from "../database/db.js";
-import gameModel from "../models/categoryModel.js";
+import gameModel from "../models/gameModel.js";
 
 export function gameValidation(req, res, next) {
   const game = req.body;
-  console.log("game", game);
+
   //   const { error } = gameModel.validate(game, { convert: false });
   const { error } = gameModel.validate(game, { abortEarly: false });
   if (error) {

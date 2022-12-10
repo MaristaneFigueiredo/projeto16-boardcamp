@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { postGame, getGames } from "../controllers/gamesController.js";
-//import { gameValidation, gameExists } from "../middleswares/gamesMiddleware.js";
+
 import {
   gameValidation,
   categoryExists,
