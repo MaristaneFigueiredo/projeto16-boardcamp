@@ -17,24 +17,61 @@ export async function postCustomer(req, res) {
   }
 }
 
+export async function alterCustomer(req, res) {
+  try {
+    const { name, phone, cpf, birthday } = req.body;
+    const { id } = req.params;
+
+    const customer = await connection.query(
+      `
+          UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5
+      `,
+      [name, phone, cpf, birthday, id]
+    );
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
+}
+
 export async function getCustomers(req, res) {
-  //   const name = req.query.name;
-  //   let customer = [];
-  //   try {
-  //     if (name === undefined) {
-  //       game = await connection.query(`
-  //           SELECT * FROM customers
-  //       `);
-  //     } else {
-  //       game = await connection.query(
-  //         `
-  //           SELECT * FROM customers WHERE name LIKE ($1)
-  //       `,
-  //         [name + "%"]
-  //       );
-  //     }
-  //     res.send(customer.rows);
-  //   } catch (error) {
-  //     return res.status(500).send({ message: "Erro inesperado no servidor!" });
-  //   }
+  const cpf = req.query.cpf;
+  let customer = [];
+  try {
+    if (cpf === undefined) {
+      customer = await connection.query(`
+            SELECT * FROM customers
+        `);
+    } else {
+      customer = await connection.query(
+        `
+            SELECT * FROM customers WHERE cpf LIKE ($1)
+        `,
+        [cpf + "%"]
+      );
+    }
+    res.send(customer.rows);
+  } catch (error) {
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
+}
+
+export async function getIdCustomer(req, res) {
+  try {
+    const { id } = req.params;
+
+    const customer = await connection.query(
+      `
+        SELECT * FROM customers WHERE id = $1
+        `,
+      [id]
+    );
+
+    res.send(customer.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
 }

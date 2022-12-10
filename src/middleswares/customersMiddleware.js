@@ -23,13 +23,32 @@ export async function customerExists(req, res, next) {
       [cpfCustomer]
     );
     if (customer.rows.length > 0) {
-      return res
-        .status(409)
-        .send({ message: "Este cliente já foi cadastrado!" });
+      return res.status(409).send({ message: "Este cpf já existe!" });
     }
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Erro inesperado no servidor!" });
   }
+  next();
+}
+
+export async function idCustomerExists(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    const customer = await connection.query(
+      `
+          SELECT * FROM customers WHERE id = $1
+          `,
+      [id]
+    );
+    if (customer.rows.length === 0) {
+      return res.status(404).send({ message: "O Cliente não existe!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
+
   next();
 }

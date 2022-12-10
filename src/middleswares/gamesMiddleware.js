@@ -4,12 +4,10 @@ import gameModel from "../models/gameModel.js";
 export function gameValidation(req, res, next) {
   const game = req.body;
 
-  //   const { error } = gameModel.validate(game, { convert: false });
   const { error } = gameModel.validate(game, { abortEarly: false });
   if (error) {
     const errors = error.details.map((d) => d.message);
     return res.status(400).send({ message: errors });
-    // return res.status(400).send({message: error.details.map( (e) => e.message)})
   }
 
   next();
