@@ -5,7 +5,9 @@ export function categoryValidation(req, res, next) {
   const category = req.body;
   const { error } = categoryModel.validate(category);
   if (error) {
-    return res.sendStatus(400);
+    return res
+      .status(400)
+      .send({ message: "O nome da categoria deve ser informado!" });
   }
 
   next();

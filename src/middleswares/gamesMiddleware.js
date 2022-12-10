@@ -18,7 +18,6 @@ export function gameValidation(req, res, next) {
 export async function categoryExists(req, res, next) {
   try {
     const idCategory = req.body.categoryId;
-    console.log("idCategory", idCategory);
 
     const category = await connection.query(
       `    SELECT * FROM categories WHERE id = $1
@@ -26,10 +25,9 @@ export async function categoryExists(req, res, next) {
       [idCategory]
     );
 
-    console.log("category rows", category.rows.length);
     if (category.rows.length === 0) {
       return res
-        .status(409)
+        .status(400)
         .send({ message: "A categoria informada não existe!" });
     }
   } catch (error) {

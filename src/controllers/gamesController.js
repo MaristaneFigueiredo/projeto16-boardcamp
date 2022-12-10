@@ -18,12 +18,24 @@ export async function postGame(req, res) {
 }
 
 export async function getGames(req, res) {
+  const name = req.query.name;
+  let game = [];
+
   try {
-    const category = await connection.query(`
+    if (name === undefined) {
+      game = await connection.query(`
           SELECT * FROM games
       `);
+    } else {
+      game = await connection.query(
+        `
+          SELECT * FROM games WHERE name LIKE ($1)
+      `,
+        [name + "%"]
+      );
+    }
 
-    res.send(category.rows);
+    res.send(game.rows);
   } catch (error) {
     return res.status(500).send({ message: "Erro inesperado no servidor!" });
   }
