@@ -7,26 +7,21 @@ import {
 } from "../controllers/customersController.js";
 import {
   customerValidation,
-  customerExists,
-  idCustomerExists,
+  cpfExists,
+  customerIdExists,
 } from "../middleswares/customersMiddleware.js";
 
 const customersRouter = Router();
 
 //POST customers
-customersRouter.post(
-  "/customers",
-  customerValidation,
-  customerExists,
-  postCustomer
-);
+customersRouter.post("/customers", customerValidation, cpfExists, postCustomer);
 
 //PUT customers
 customersRouter.put(
   "/customers/:id",
   customerValidation,
-  idCustomerExists,
-  customerExists,
+  customerIdExists,
+  cpfExists,
   alterCustomer
 );
 
@@ -34,6 +29,6 @@ customersRouter.put(
 customersRouter.get("/customers", getCustomers);
 
 //GET customers id
-customersRouter.get("/customers/:id", idCustomerExists, getIdCustomer);
+customersRouter.get("/customers/:id", customerIdExists, getIdCustomer);
 
 export default customersRouter;

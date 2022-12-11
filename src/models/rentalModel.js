@@ -1,9 +1,9 @@
 import joi from "joi";
 
 const rentalModel = joi.object({
-  customerId: joi.integer().required(),
-  gameId: joi.integer().required(),
-  daysRented: joi.integer().required(),
+  customerId: joi.number().integer().required(),
+  gameId: joi.number().integer().required(),
+  daysRented: joi.number().integer().greater(0).required(),
 });
 
 export default rentalModel;

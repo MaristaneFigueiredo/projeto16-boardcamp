@@ -18,7 +18,6 @@ gamesRouter.post(
   gameExists,
   postGame
 );
-//  gamesRouter.post("/games", categoryExists, gameExists, postGame);
 
 //GET games
 gamesRouter.get("/games", getGames);
