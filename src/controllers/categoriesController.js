@@ -2,7 +2,6 @@ import connection from "../database/db.js";
 
 export async function postCategory(req, res) {
   try {
-    // const nameCategory = req.body;
     const nameCategory = req.body.name;
     const category = await connection.query(
       `

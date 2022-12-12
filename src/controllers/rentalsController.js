@@ -117,7 +117,7 @@ export async function endRental(req, res) {
     );
 
     if (rentalInOpen.rows[0].returnDate !== null) {
-      return res.status(400).send({ message: "'Aluguel já finalizado!'" });
+      return res.status(400).send({ message: "Aluguel já finalizado!" });
     }
     const gameId = rentalInOpen.rows[0].gameId;
     const game = await gameById(gameId);
@@ -139,6 +139,37 @@ export async function endRental(req, res) {
     );
 
     res.send(rental.rows);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
+}
+
+export async function deleteRental(req, res) {
+  try {
+    const { id } = req.params;
+
+    const rentalInOpen = await connection.query(
+      `
+        SELECT * FROM rentals WHERE id = $1
+        `,
+      [id]
+    );
+
+    if (rentalInOpen.rows[0].returnDate === null) {
+      return res
+        .status(400)
+        .send({ message: "O jogo ainda não foi devolvido!" });
+    }
+
+    const rental = await connection.query(
+      `
+        DELETE FROM rentals WHERE id = $1
+        `,
+      [id]
+    );
+
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Erro inesperado no servidor!" });

@@ -57,7 +57,7 @@ export async function rentExists(req, res, next) {
     if (rental.rows.length === 0) {
       return res
         .status(404)
-        .send({ message: "Esta aluguel não foi cadastrado!" });
+        .send({ message: "Este aluguel não foi cadastrado!" });
     }
   } catch (error) {
     console.log(error);
@@ -65,20 +65,3 @@ export async function rentExists(req, res, next) {
   }
   next();
 }
-
-// export async function rentalById(id) {
-//   try {
-//     const rental = await connection.query(
-//       `
-//           SELECT * FROM rentals WHERE id = $1
-//          `,
-//       [id]
-//     );
-//     return rental.rows[0];
-//   } catch (error) {
-//     console.error(error);
-//     return response
-//       .status(500)
-//       .send({ message: "Erro inesperado no servidor!" });
-//   }
-// }

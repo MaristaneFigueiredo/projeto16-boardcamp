@@ -14,24 +14,6 @@ export function customerValidation(req, res, next) {
   next();
 }
 
-// export async function customerExists(req, res, next) {
-//   try {
-//     const cpfCustomer = req.body.cpf;
-//     const customer = await connection.query(
-//       `    SELECT * FROM customers WHERE cpf = $1
-//       `,
-//       [cpfCustomer]
-//     );
-//     if (customer.rows.length > 0) {
-//       return res.status(409).send({ message: "Este cpf já existe!" });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).send({ message: "Erro inesperado no servidor!" });
-//   }
-//   next();
-// }
-
 export async function cpfExists(req, res, next) {
   try {
     const cpfCustomer = req.body.cpf;
