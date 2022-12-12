@@ -14,9 +14,12 @@ export function rentalValidation(req, res, next) {
 
 export async function validateAccessibleGame(req, res, next) {
   try {
-    const { id } = req.body.gameId;
+    const id = req.body.gameId;
     const game = await gameById(id);
+
     const stockTotal = game.stockTotal;
+
+    // console.log("stockTotal", stockTotal);
 
     const rental = await connection.query(
       `
@@ -26,7 +29,7 @@ export async function validateAccessibleGame(req, res, next) {
     );
 
     const rentalInaccessible = rental.rows[0].count;
-    console.log("rentalInaccessible", rentalInaccessible);
+    //console.log("rentalInaccessible", rentalInaccessible);
 
     if (stockTotal <= rentalInaccessible) {
       return res.status(400).send({
@@ -40,3 +43,42 @@ export async function validateAccessibleGame(req, res, next) {
     return res.status(500).send({ message: "Erro inesperado no servidor!" });
   }
 }
+
+export async function rentExists(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    const rental = await connection.query(
+      `    SELECT * FROM rentals WHERE id = $1
+      `,
+      [id]
+    );
+
+    if (rental.rows.length === 0) {
+      return res
+        .status(404)
+        .send({ message: "Esta aluguel não foi cadastrado!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Erro inesperado no servidor!" });
+  }
+  next();
+}
+
+// export async function rentalById(id) {
+//   try {
+//     const rental = await connection.query(
+//       `
+//           SELECT * FROM rentals WHERE id = $1
+//          `,
+//       [id]
+//     );
+//     return rental.rows[0];
+//   } catch (error) {
+//     console.error(error);
+//     return response
+//       .status(500)
+//       .send({ message: "Erro inesperado no servidor!" });
+//   }
+// }

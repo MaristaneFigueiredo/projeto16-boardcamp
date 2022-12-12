@@ -29,7 +29,7 @@ export async function getGames(req, res) {
     } else {
       game = await connection.query(
         `
-          SELECT * FROM games WHERE name LIKE ($1)
+          SELECT * FROM games WHERE name LIKE $1
       `,
         [name + "%"]
       );
