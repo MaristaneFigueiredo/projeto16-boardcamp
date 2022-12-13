@@ -27,9 +27,12 @@ export async function getGames(req, res) {
           SELECT * FROM games
       `);
     } else {
+      // SELECT * FROM games WHERE name LIKE $1
       game = await connection.query(
         `
-          SELECT * FROM games WHERE name LIKE $1
+          
+          SELECT * FROM games WHERE lower(name) LIKE lower($1)
+          
       `,
         [name + "%"]
       );
